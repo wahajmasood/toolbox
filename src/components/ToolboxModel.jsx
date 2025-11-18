@@ -3,12 +3,19 @@ import { useFrame } from '@react-three/fiber'
 import { useGLTF } from '@react-three/drei'
 import * as THREE from 'three'
 
-export default function ToolboxModel({ wireframe, onPartClick }) {
+export default function ToolboxModel({ wireframe, onPartClick, onLoad }) {
   const groupRef = useRef()
   const { scene } = useGLTF('/toolbox-chits.glb')
   const [hoveredPart, setHoveredPart] = useState(null)
   const [selectedPart, setSelectedPart] = useState(null)
   const [openParts, setOpenParts] = useState({})
+
+  // Call onLoad when model is ready
+  useEffect(() => {
+    if (scene && onLoad) {
+      onLoad()
+    }
+  }, [scene, onLoad])
   const lidRefs = useRef({ Cube010: null, Cube010_1: null, Cube010_2: null, Cylinder001: null })
   const curveRefs = useRef({ Curve005_1: null, Curve005_2: null, Curve005_3: null })
   const drawerRefs = useRef({ Cube034: null, Cube034_1: null, Cube034_2: null, Cube034_3: null })
